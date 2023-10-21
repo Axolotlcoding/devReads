@@ -1,5 +1,6 @@
-#DevReads
-##The solution to wasting hours on trying to find a good web development article
+# DevReads
+
+## The solution to wasting hours on trying to find a good web development article
 
 ![devReads](https://github.com/Axolotlcoding/devReads/assets/49956464/cab9c440-1faa-4dc6-ba34-1d0fdb03d796)
 
