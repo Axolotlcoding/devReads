@@ -2,7 +2,7 @@ const path = require('path');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
 
-  entry: './src/index.js',
+  entry: './client/src/index.js',
 
   output: {
     path: path.join(__dirname, '/build'),
@@ -11,14 +11,16 @@ module.exports = {
 
   plugins: [
     new HTMLWebpackPlugin({
-      template: './src/index.html'
+      template: './client/src/index.html'
     })
   ],
+
+  mode: 'development',
 
   module: {
     rules: [
       {
-        test: /.js$/,
+        test: /.jsx?$/,
         exclude: '/node_modules/',
         use: {
           loader: 'babel-loader',
