@@ -19,7 +19,7 @@ const App = () => {
 function getArticles() {
     useEffect(async () => {
         try {
-          const response = await fetch('http://localhost:8080/') 
+          const response = await fetch('http://localhost:3000/') 
           const data = await response.json()
           setFeedArticles(data)
         }
@@ -37,7 +37,7 @@ function handleDeleteClick() {
     console.log("DELETE")
     useEffect( async () => {
       try { 
-      await fetch('http://localhost:8080/', { 
+      await fetch('http://localhost:3000/', { 
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ function handleAddClick() {
     console.log("ADD")
     useEffect( async () => {
       try { 
-      await fetch('http://localhost:8080/', { 
+      await fetch('http://localhost:3000/article', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

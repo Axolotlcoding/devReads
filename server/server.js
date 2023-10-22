@@ -13,9 +13,6 @@ app.use(express.static(path.resolve(__dirname, '../client')));
 //route to homepage
 app.get('/', (req, res) => {
     res.status(200).sendFile(path.resolve(__dirname, '../client/src/index.html'));
-    fetch('https://swapi.dev/api/people/1/')
-    .then((res) => res.json())
-    .then((data) => console.log(data.name));
 });
 
 
@@ -25,13 +22,14 @@ app.get('/getAccessToken', articleController.authorizeUser, (req, res) => {
 });
 
 
-//route to loggedIn
+// //route to loggedIn
 app.get('/:id', articleController.getUserPage, (req, res) => {
   res.status(200).json(res.locals.getUserPage);
 });
 
 //add article route
-app.post('/article', articleController.addArticle, (req, res) => {
+app.post('/article', articleController.addArticle , (req, res) => {
+  console.log('The front end is connected to the back end!!!!! !!!!! !!!!!!');
   res.status(200).json(res.locals.addArticle);
 });
 
