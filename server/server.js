@@ -5,6 +5,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fetch = require('node-fetch');
+const articleController = require('./controllers/articleController');
 
 app.use(express.json());
 
@@ -18,25 +19,25 @@ app.get('/', (req, res) => {
 
 //route for github OAuth
 app.get('/getAccessToken', articleController.authorizeUser, (req, res) => {
-    res.status(200).json(res.locals.authorizeUser);
+    res.status(200)/*.json(res.locals.authorizeUser)*/;
 });
 
 
 // //route to loggedIn
-app.get('/:id', articleController.getUserPage, (req, res) => {
-  res.status(200).json(res.locals.getUserPage);
+app.get('/user/', articleController.getUserPage, (req, res) => {
+  res.status(200).json(res.locals.user);
 });
 
-//add article route
-app.post('/article', articleController.addArticle , (req, res) => {
-  console.log('The front end is connected to the back end!!!!! !!!!! !!!!!!');
-  res.status(200).json(res.locals.addArticle);
-});
+// //add article route
+// app.post('/article', articleController.addArticle , (req, res) => {
+//   console.log('The front end is connected to the back end!!!!! !!!!! !!!!!!');
+//   res.status(200).json(res.locals.addArticle);
+// });
 
-//delete article route
-app.delete('/article', articleController.deleteArticle, (req, res) => {
-  res.status(200).json(res.locals.deleteArticle);
-});
+// //delete article route
+// app.delete('/article', articleController.deleteArticle, (req, res) => {
+//   res.status(200).json(res.locals.deleteArticle);
+// });
 
 //404 route
 app.all('*', (req, res) => {
