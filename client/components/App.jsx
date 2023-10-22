@@ -8,7 +8,7 @@ const App = () => {
 /* 
 *********************** initializing state ******************************
 */
-  const [feedArticles, setFeedArticles] = useState([1, 2, 3])
+  const [feedArticles, setFeedArticles] = useState([])
   const [newArticle, setNewArticle] = useState("");
   const [articleID, setArticleID] = useState("")
   const [user, setUser] = useState("")
@@ -16,19 +16,19 @@ const App = () => {
 /* 
 *********************** Grabs Articles for Feed  ******************************
 */  
-function getArticles() {
-    useEffect(async () => {
+async function getArticles() {
         try {
-          const response = await fetch('http://localhost:8080/') 
+          const response = await fetch('http://localhost:8080/articles') 
           const data = await response.json()
           setFeedArticles(data)
         }
         catch (err) {
           console.log(err)
         }
-    }, [])
 }
-
+console.log("before", feedArticles)
+useEffect(() => getArticles(), [])
+console.log(feedArticles)
 /* 
 *********************** Handle Delete Request ******************************
 */
