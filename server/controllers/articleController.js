@@ -1,4 +1,5 @@
 const db = require('../model/articleModel');
+const cheerio = require('cheerio');
 
 
 const articleController = {};
@@ -11,7 +12,7 @@ const articleController = {};
 
   //Show user's articles middleware
   articleController.getUserPage = async (req, res, next) => {
-    console.log('getUserPage with any ID param is working');
+    console.log('From articleController.getUserPage: getUserPage with any ID param is working');
     // const { id } = req.query;
     
     //get username record associated with the id variable passed in as a request parameter
@@ -44,15 +45,27 @@ const articleController = {};
   //Add article middleware
   articleController.addArticle = async (req, res, next) => {
     try {
+
+        //confirm that the middleware is being accessed by the route
         console.log('articleController.addArticle middleware is working');
+
 
         //capture article_link value and user value from front end request body
         const { article_link, user } = req.body;
+      
+
+        //fetch article_link and parse html body to pull out article title string ***USING CHEERIO PACKAGE***
+        fetch(article_link)
+        .then((response) => response.text())
+        .then((html) => {
+          const $ = cheerio.load(html)
+          article_title = $('title').text();
+        });
         
+       
 
         //define query parameters ($1 = article_link, $2 = user)
-        const queryParams = [article_link, user];
-
+        const queryParams = [article_link, article_title, user];
 
         //Define SQL query
         const text = `
