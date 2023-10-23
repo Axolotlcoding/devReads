@@ -1,7 +1,7 @@
 import React from "react";
 import Articles from "./articles.jsx";
 
-export default function Feed({handleDeleteClick, feedArticles}) {
+export default function Feed({handleDeleteClick, feedArticles, handleReadArticleClick}) {
 
     const articles = [];
     console.log("feedArticles length", feedArticles.length)
@@ -11,7 +11,11 @@ export default function Feed({handleDeleteClick, feedArticles}) {
               <Articles 
               key = {`article${i}`}
               handleDeleteClick = {handleDeleteClick}
-              articleID = {`${i}`}
+              handleReadArticleClick = {handleReadArticleClick}
+              articleID = {feedArticles[i]._id}
+              articleTitle = {feedArticles[i].article_title}
+              articleLink = {feedArticles[i].article_link}
+              articleUser = {feedArticles[i].username}
               />
           )
     }

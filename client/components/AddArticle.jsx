@@ -1,6 +1,6 @@
 import React from "react";
 
-const AddArticle = ({handleAddClick, newArticle, setNewArticle}) => {
+const AddArticle = ({handleAddClick, newTitle, setNewTitle, newArticle, setNewArticle}) => {
 
 console.log(newArticle)
 
@@ -13,7 +13,13 @@ console.log(newArticle)
                     onChange={(e) => setNewArticle(e.target.value)}
                     />
                 </label>
-            </form><div style={{display: "block", justifyContent: "center"}}><button onClick={handleAddClick}>Add Article</button></div>
+                <label>Article Title: 
+                    <input type="text" 
+                    value = { newTitle }
+                    onChange={(e) => setNewTitle(e.target.value)}
+                    />
+                </label>
+            </form><div style={{display: "block", justifyContent: "center"}}><button type="submit" onClick={handleAddClick}>Add Article</button></div>
         </div>
     )
 }
