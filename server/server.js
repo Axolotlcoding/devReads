@@ -54,7 +54,9 @@ app.delete("/article", articleController.deleteArticle, (req, res) => {
   console.log("article deleted, middleware completed");
   res.status(200).json({});
 });
-// GIT HUB AUTH
+/*
+ ************************ GIT HUB AUTH MIDDLEWARE *************************
+ */
 passport.use(
   new GitHubStrategy(
     {
