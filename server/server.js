@@ -1,5 +1,4 @@
-const CLIENT_ID = "c0209758ca554097d7fe";
-const CLIENT_SECRET = "73596a7d72b0d2496d588f140ff665179469a6db";
+// require("dotenv").config();
 const PORT = 3000;
 const express = require("express");
 const app = express();
@@ -7,6 +6,9 @@ const path = require("path");
 const fetch = require("node-fetch");
 const articleController = require("./controllers/articleController");
 const cors = require("cors");
+const passport = require("passport");
+// const { Sequelize } = require("sequelize");
+// const sequelize = new Sequelize(process.env.PG_URI);
 
 app.use(cors());
 
@@ -21,10 +23,46 @@ app.get("/", (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, "../client/src/index.html"));
 });
 
-//route for github OAuth
-app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
-  res.status(200) /*.json(res.locals.authorizeUser)*/;
+app.get("/login", (req, res) => {
+  res.status(200).sendFile(path.resolve(__dirname, "../client/src/login.html"));
 });
+
+// passport.use(
+//   new GitHubStrategy(
+//     {
+//       clientID: process.env.GITHUB_CLIENT_ID,
+//       clientSecret: process.env.GITHUB_CLIENT_SECRET,
+//       callbackURL: process.env.GITHUB_CALLBACK_URL,
+//     },
+//     async function (accessToken, refreshToken, profile, done) {
+//       const [user, created] = await user.findOrCreate(
+//         { where: { username: profile.id } },
+//         function (err, user) {
+//           return done(err, user);
+//         }
+//       );
+//     }
+//   )
+// );
+
+// app.get(
+//   "/auth/github",
+//   passport.authenticate("github", { scope: ["user:email"] })
+// );
+
+// app.get(
+//   "/auth/github/callback",
+//   passport.authenticate("github", { failureRedirect: "/login" }),
+//   function (req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect("/");
+//   }
+// );
+
+//route for github OAuth
+// app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
+//   res.status(200) /*.json(res.locals.authorizeUser)*/;
+// });
 
 // //route to loggedIn
 app.get("/user", articleController.getUserPage, (req, res) => {
