@@ -45,9 +45,8 @@ const articleController = {};
 
 
     try {
-
     //front end will send a req body with an article link string attached
-    
+    //const article = req.body
     //get article title programatically by fetching the link inside this middleware and grab the <title> html tag contents
 
     //store both of the above value in varibles
