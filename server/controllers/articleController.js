@@ -1,7 +1,4 @@
 const db = require('../model/articleModel');
-const jsdom = require('jsdom');
-const { JSDOM } = jsdom;
-
 
 
 const articleController = {};
@@ -52,21 +49,9 @@ const articleController = {};
         //capture article_link value and user value from front end request body
         const { article_link, user } = req.body;
         
-        //get article title programatically by fetching the link inside this middleware and grab the <title> html tag contents
-        const getTitle = (url) => {
-            return fetch(url)
-            .then(response => {
-              const dom = new JSDOM(response.body);
-              console.log(dom.window.document.querySelector('title'));
-             // console.log(dom.window.document.querySelectorAll('title'));
-            });  
-        };
 
-        const article_title = await getTitle(article_link);
-        console.log(`article title is: `, article_title);
-        
         //define query parameters ($1 = article_link, $2 = user)
-        const queryParams = [article_link, article_title,  user];
+        const queryParams = [article_link, user];
 
 
         //Define SQL query
