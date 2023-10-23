@@ -38,7 +38,7 @@ const App = () => {
 
   async function getArticles() {
           try {
-            const response = await fetch('http://localhost:3000/user') 
+            const response = await fetch('http://localhost:3000/article') 
             const data = await response.json()
             setFeedArticles(data)
           }
