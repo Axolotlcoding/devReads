@@ -40,7 +40,7 @@ articleController.getUserPage = async (req, res, next) => {
 
 // Update and publish Feed Articles
 articleController.feedArticles = async (req, res, next) => {
-  console.log("articleController.feedArticles middleware is working");
+  console.log("entered articleController.feedArticles middleware");
   try {
     const queryText = `
         SELECT *

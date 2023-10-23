@@ -28,6 +28,33 @@ app.get("/login", (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, "../client/src/login.html"));
 });
 
+//route for github OAuth
+// app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
+//   res.status(200) /*.json(res.locals.authorizeUser)*/;
+// });
+
+// //route to loggedIn
+app.get("/user", articleController.getUserPage, (req, res) => {
+  res.status(200).json(res.locals.user);
+});
+
+// grab all articles route
+app.get("/article", articleController.feedArticles, (req, res) => {
+  console.log("get articles succesful");
+  res.status(200).send(res.locals.articles);
+});
+
+//add article route
+app.post("/article", articleController.addArticle, (req, res) => {
+  res.status(200).send(res.locals.article);
+});
+
+//delete article route
+app.delete("/article", articleController.deleteArticle, (req, res) => {
+  console.log("article deleted, middleware completed");
+  res.status(200).json({});
+});
+// GIT HUB AUTH
 passport.use(
   new GitHubStrategy(
     {
@@ -60,33 +87,6 @@ app.get(
     res.redirect("/");
   }
 );
-
-//route for github OAuth
-// app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
-//   res.status(200) /*.json(res.locals.authorizeUser)*/;
-// });
-
-// //route to loggedIn
-app.get("/user", articleController.getUserPage, (req, res) => {
-  res.status(200).json(res.locals.user);
-});
-
-// grab all articles route
-app.get("/article", articleController.feedArticles, (req, res) => {
-  console.log("get articles succesful");
-  res.status(200).send(res.locals.articles);
-});
-
-//add article route
-app.post("/article", articleController.addArticle, (req, res) => {
-  res.status(200).send(res.locals.article);
-});
-
-//delete article route
-app.delete("/article", articleController.deleteArticle, (req, res) => {
-  console.log("article deleted, middleware completed");
-  res.status(200).json({});
-});
 
 //404 route
 app.all("*", (req, res) => {
