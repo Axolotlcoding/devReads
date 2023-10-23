@@ -1,10 +1,10 @@
 import React from "react";
 
-const Articles = ({handleDeleteClick}) => {
+const Articles = ({handleDeleteClick, articleID}) => {
 
     return (
         <div><h3>Articles</h3>
-            <button onClick={handleDeleteClick}>HandleDelete</button>
+            <button onClick={ () => { handleDeleteClick(articleID) } }>HandleDelete</button>
         </div>
     )
 }
