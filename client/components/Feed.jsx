@@ -3,12 +3,19 @@ import Articles from "./articles.jsx";
 
 export default function Feed({handleDeleteClick, feedArticles}) {
 
-    const articles = feedArticles.map((article, i) => (
-        <Articles 
-        key = {`${article+i}`}
-        handleDeleteClick = {handleDeleteClick}
-        />
-    ))
+    const articles = [];
+    console.log("feedArticles length", feedArticles.length)
+    console.log("feed", feedArticles)
+    for (let i = 0; i < feedArticles.length; i++) {
+      articles.push(
+              <Articles 
+              key = {`article${i}`}
+              handleDeleteClick = {handleDeleteClick}
+              articleID = {`${i}`}
+              />
+          )
+    }
+
     console.log("articles state", articles)
 
     return (
