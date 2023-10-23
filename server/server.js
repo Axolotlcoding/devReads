@@ -1,49 +1,56 @@
-const CLIENT_ID = "c0209758ca554097d7fe"
-const CLIENT_SECRET = "73596a7d72b0d2496d588f140ff665179469a6db"
+const CLIENT_ID = "c0209758ca554097d7fe";
+const CLIENT_SECRET = "73596a7d72b0d2496d588f140ff665179469a6db";
 const PORT = 3000;
 const express = require("express");
 const app = express();
-const path = require('path');
-const fetch = require('node-fetch');
-const articleController = require('./controllers/articleController');
-const cors = require('cors');
+const path = require("path");
+const fetch = require("node-fetch");
+const articleController = require("./controllers/articleController");
+const cors = require("cors");
 
 app.use(cors());
 
 app.use(express.json());
 
-app.use(express.static(path.resolve(__dirname, '../client')));
+app.use("/build", express.static(path.resolve(__dirname, "../build")));
+
+app.use(express.static(path.resolve(__dirname, "../client")));
 
 //route to homepage
-app.get('/', (req, res) => {
-    res.status(200).sendFile(path.resolve(__dirname, '../client/src/index.html'));
+app.get("/", (req, res) => {
+  res.status(200).sendFile(path.resolve(__dirname, "../client/src/index.html"));
 });
-
 
 //route for github OAuth
-app.get('/getAccessToken', articleController.authorizeUser, (req, res) => {
-    res.status(200)/*.json(res.locals.authorizeUser)*/;
+app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
+  res.status(200) /*.json(res.locals.authorizeUser)*/;
 });
 
-
 // //route to loggedIn
-app.get('/user/', articleController.getUserPage, (req, res) => {
+app.get("/user", articleController.getUserPage, (req, res) => {
   res.status(200).json(res.locals.user);
 });
 
+// grab all articles route
+app.get("/article", articleController.feedArticles, (req, res) => {
+  console.log("get articles succesful");
+  res.status(200).send(res.locals.articles);
+});
+
 //add article route
-app.post('/article', articleController.addArticle , (req, res) => {
+app.post("/article", articleController.addArticle, (req, res) => {
   res.status(200).send(res.locals.article);
 });
 
-// //delete article route
-// app.delete('/article', articleController.deleteArticle, (req, res) => {
-//   res.status(200).json(res.locals.deleteArticle);
-// });
+//delete article route
+app.delete("/article", articleController.deleteArticle, (req, res) => {
+  console.log("article deleted, middleware completed");
+  res.status(200).json({});
+});
 
 //404 route
-app.all('*', (req, res) => {
-  res.status(404).send('The page you are looking for does not exist');
+app.all("*", (req, res) => {
+  res.status(404).send("The page you are looking for does not exist");
 });
 
 //global error handler
@@ -52,8 +59,8 @@ app.use((err, req, res, next) => {
   const defaultErr = {
     log: "Express middleware error", //server sees this message
     status: 500,
-    message: { err: "An error occured"} //client sees this message
-  }
+    message: { err: "An error occured" }, //client sees this message
+  };
   //assign default error object to an errorObj variable
   const errorObj = Object.assign(defaultErr, err);
   //return json response including error object status and error object message
@@ -61,4 +68,4 @@ app.use((err, req, res, next) => {
 });
 
 //start server
-app.listen(PORT, ()=> console.log('The server is listening on port 3000'));
+app.listen(PORT, () => console.log("The server is listening on port 3000"));

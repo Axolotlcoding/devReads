@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AddArticle from "./AddArticle.jsx";
 import Feed from "./Feed.jsx";
 
@@ -9,6 +8,7 @@ const App = () => {
 *********************** initializing state ******************************
 */
   const [feedArticles, setFeedArticles] = useState("")
+  const [newTitle, setNewTitle] = useState("")
   const [newArticle, setNewArticle] = useState("");
   const [user, setUser] = useState("")
   
@@ -16,35 +16,56 @@ const App = () => {
 *********************** Grabs User Data for display or reference  ******************************
 */  
 
-async function getUser() {
-    try {
-      const response = await fetch('http://localhost:3000/user') 
-      const data = await response.json()
-      setUser(data)
-    }
-    catch (err) {
-      console.log(err)
-    }
-}
 
-useEffect(() => getUser(), [])
+// useEffect(() => {
+//   async function getUser() {
+//       try {
+//         const response = await fetch('http://localhost:3000/user') 
+//         const data = await response.json()
+//         setUser(data)
+//       }
+//       catch (err) {
+//         console.log(err)
+//       }
+//   }
+//   getUser()
+// }, [])
 
 
 /* 
 *********************** Grabs Articles for Feed  ******************************
 */  
-async function getArticles() {
-        try {
-          const response = await fetch('http://localhost:3000/article') 
-          const data = await response.json()
-          setFeedArticles(data)
-        }
-        catch (err) {
-          console.log(err)
-        }
-}
 
-useEffect(() => getArticles(), [])
+  async function getArticles() {
+          try {
+            const response = await fetch('http://localhost:3000/user') 
+            const data = await response.json()
+            setFeedArticles(data)
+          }
+          catch (err) {
+            console.log(err)
+          }
+  }
+  useEffect(() => {
+    getArticles()
+  }, [])
+  // useEffect(() => {
+  //   async function getArticles(){
+  //   try {
+  //     console.log("hi")
+  //     const response = await fetch('http://localhost:3000/article') 
+  //     console.log("data", data)
+  //     const data = await response.json()
+  //     setFeedArticles(data)
+  //   }
+  //   catch (err) {
+  //     console.log(err)
+  //   }
+  // }
+  // getArticles()
+  // }, [])
+    
+ 
 
 /* 
 *********************** Handle Delete Request ******************************
@@ -73,24 +94,7 @@ const handleDeleteClick = (articleID) => {
 
 const handleAddClick = () => {
 
-   //user DOMParser to extract article title from link
-
-   const getTitle = (url) => {
-    console.log(url);
-      fetch(url, {mode: 'cors'})
-      .then((response) => response.text())
-      .then((html) => {
-        const document = new DOMParser().parseFromString(html, 'text/html');
-        const title = document.querySelectorAll('title')[0];
-        console.log(`from App.js get title: `,title.innerText);
-        return title.innerText;
-      });
-   }
-
-   const articleTitle = getTitle(newArticle);
-
-
-    console.log("inside ADD")
+    // console.log(title)
     fetch('http://localhost:3000/article', { 
         method: 'POST',
         headers: {
@@ -98,7 +102,7 @@ const handleAddClick = () => {
         },
         body: JSON.stringify( {
           article_link: newArticle,
-          user: 2
+          user: newTitle
         } )
       })
       .then(() => {
@@ -111,8 +115,20 @@ const handleAddClick = () => {
 
 
 /* 
-*********************** Handle POST request ******************************
+*********************** Handle Read Article request ******************************
 */
+
+const handleReadArticleClick = (articleLink) => {
+
+    // fetch('http://localhost:3000/readarticle')
+    //   .then(() => {
+    //     // getArticles()
+    //     console.log('Redirected!')
+    //   })
+    //   .catch(error => console.log(error));
+  console.log("Not neede function");
+  }
+
 
 
     return (
@@ -121,8 +137,11 @@ const handleAddClick = () => {
             newArticle = {newArticle}
             setNewArticle = {setNewArticle}
             handleAddClick = {handleAddClick}
+            newTitle = {newTitle}
+            setNewTitle = {setNewTitle}
             />
             <Feed 
+            handleReadArticleClick = {handleReadArticleClick}
             handleDeleteClick = {handleDeleteClick}
             feedArticles = {feedArticles}
             />
