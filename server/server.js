@@ -30,7 +30,6 @@ app.get('/user/', articleController.getUserPage, (req, res) => {
 
 // //add article route
 // app.post('/article', articleController.addArticle , (req, res) => {
-//   console.log('The front end is connected to the back end!!!!! !!!!! !!!!!!');
 //   res.status(200).json(res.locals.addArticle);
 // });
 
