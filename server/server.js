@@ -6,6 +6,9 @@ const app = express();
 const path = require('path');
 const fetch = require('node-fetch');
 const articleController = require('./controllers/articleController');
+const cors = require('cors');
+
+app.use(cors());
 
 app.use(express.json());
 
@@ -28,10 +31,10 @@ app.get('/user/', articleController.getUserPage, (req, res) => {
   res.status(200).json(res.locals.user);
 });
 
-// //add article route
-// app.post('/article', articleController.addArticle , (req, res) => {
-//   res.status(200).json(res.locals.addArticle);
-// });
+//add article route
+app.post('/article', articleController.addArticle , (req, res) => {
+  res.status(200).send(res.locals.article);
+});
 
 // //delete article route
 // app.delete('/article', articleController.deleteArticle, (req, res) => {

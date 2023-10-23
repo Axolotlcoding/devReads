@@ -18,7 +18,7 @@ const App = () => {
 
 async function getUser() {
     try {
-      const response = await fetch('http://localhost:8080/user') 
+      const response = await fetch('http://localhost:3000/user') 
       const data = await response.json()
       setUser(data)
     }
@@ -35,7 +35,7 @@ useEffect(() => getUser(), [])
 */  
 async function getArticles() {
         try {
-          const response = await fetch('http://localhost:8080/articles') 
+          const response = await fetch('http://localhost:3000/article') 
           const data = await response.json()
           setFeedArticles(data)
         }
@@ -52,7 +52,7 @@ useEffect(() => getArticles(), [])
   
 const handleDeleteClick = (articleID) => {
     console.log("in delete click")
-      fetch('http://localhost:8080/articles', { 
+      fetch('http://localhost:3000/article', { 
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
@@ -73,14 +73,14 @@ const handleDeleteClick = (articleID) => {
 
 const handleAddClick = () => {
     console.log("inside ADD")
-    fetch('http://localhost:8080/articles', { 
+    fetch('http://localhost:3000/article', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify( {
-          article: newArticle,
-          user: user
+          article_link: newArticle,
+          user: 2
         } )
       })
       .then(() => {

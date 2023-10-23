@@ -8,7 +8,7 @@ const pool = new Pool({
 
 module.exports = {
     query: (text, queryParams, callback) => {
-      console.log('connected to db', text);
+      // console.log('connected to db', text);
       return pool.query(text, queryParams, callback);
     }
   };
