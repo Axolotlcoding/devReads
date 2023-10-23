@@ -1,4 +1,4 @@
-// require("dotenv").config();
+require("dotenv").config();
 const PORT = 3000;
 const express = require("express");
 const app = express();
@@ -7,8 +7,9 @@ const fetch = require("node-fetch");
 const articleController = require("./controllers/articleController");
 const cors = require("cors");
 const passport = require("passport");
-// const { Sequelize } = require("sequelize");
-// const sequelize = new Sequelize(process.env.PG_URI);
+const GitHubStrategy = require("passport-github2").Strategy;
+const { Sequelize } = require("sequelize");
+const sequelize = new Sequelize(process.env.PG_URI);
 
 app.use(cors());
 
@@ -27,37 +28,38 @@ app.get("/login", (req, res) => {
   res.status(200).sendFile(path.resolve(__dirname, "../client/src/login.html"));
 });
 
-// passport.use(
-//   new GitHubStrategy(
-//     {
-//       clientID: process.env.GITHUB_CLIENT_ID,
-//       clientSecret: process.env.GITHUB_CLIENT_SECRET,
-//       callbackURL: process.env.GITHUB_CALLBACK_URL,
-//     },
-//     async function (accessToken, refreshToken, profile, done) {
-//       const [user, created] = await user.findOrCreate(
-//         { where: { username: profile.id } },
-//         function (err, user) {
-//           return done(err, user);
-//         }
-//       );
-//     }
-//   )
-// );
+passport.use(
+  new GitHubStrategy(
+    {
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: process.env.GITHUB_CALLBACK_URL,
+    },
+    async function (accessToken, refreshToken, profile, done) {
+      const [user, created] = await user.findOrCreate(
+        { where: { username: profile.id } },
+        function (err, user) {
+          return done(err, user);
+        }
+      );
+    }
+  )
+);
 
-// app.get(
-//   "/auth/github",
-//   passport.authenticate("github", { scope: ["user:email"] })
-// );
+app.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
 
-// app.get(
-//   "/auth/github/callback",
-//   passport.authenticate("github", { failureRedirect: "/login" }),
-//   function (req, res) {
-//     // Successful authentication, redirect home.
-//     res.redirect("/");
-//   }
-// );
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/login" }),
+  function (req, res) {
+    console.log("session user", req.session.passport.user);
+    // Successful authentication, redirect home.
+    res.redirect("/");
+  }
+);
 
 //route for github OAuth
 // app.get("/getAccessToken", articleController.authorizeUser, (req, res) => {
