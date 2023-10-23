@@ -8,75 +8,87 @@ const App = () => {
 /* 
 *********************** initializing state ******************************
 */
-  const [feedArticles, setFeedArticles] = useState([1, 2, 3])
+  const [feedArticles, setFeedArticles] = useState("")
   const [newArticle, setNewArticle] = useState("");
-  const [articleID, setArticleID] = useState("")
   const [user, setUser] = useState("")
+
+  /* 
+*********************** Grabs User Data for display or reference  ******************************
+*/  
+
+async function getUser() {
+    try {
+      const response = await fetch('http://localhost:8080/user') 
+      const data = await response.json()
+      setUser(data)
+    }
+    catch (err) {
+      console.log(err)
+    }
+}
+
+useEffect(() => getUser(), [])
+
 
 /* 
 *********************** Grabs Articles for Feed  ******************************
 */  
-function getArticles() {
-    useEffect(async () => {
+async function getArticles() {
         try {
-          const response = await fetch('http://localhost:3000/') 
+          const response = await fetch('http://localhost:8080/articles') 
           const data = await response.json()
           setFeedArticles(data)
         }
         catch (err) {
           console.log(err)
         }
-    }, [])
 }
+
+useEffect(() => getArticles(), [])
 
 /* 
 *********************** Handle Delete Request ******************************
 */
   
-function handleDeleteClick() {
-    console.log("DELETE")
-    useEffect( async () => {
-      try { 
-      await fetch('http://localhost:3000/', { 
+const handleDeleteClick = (articleID) => {
+    console.log("in delete click")
+      fetch('http://localhost:8080/articles', { 
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify( {articleID: articleID} )
+        body: JSON.stringify({articleID: articleID})
       })
-      getArticles()
-    } catch (err) {
-        console.log(err)
+        .then(() => {
+          getArticles()
+          console.log('Article Deleted!')
+        })
+        .catch(error => console.log(error));
+    console.log("delete request completed");
     }
-    }, [])
-
-}
 
 /* 
 *********************** Handle POST REQUEST ******************************
 */
 
-function handleAddClick() {
-    console.log("ADD")
-    useEffect( async () => {
-      try { 
-      await fetch('http://localhost:3000/article', { 
+const handleAddClick = () => {
+    console.log("inside ADD")
+    fetch('http://localhost:8080/articles', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify( {
-          articleID: articleID, 
           article: newArticle,
           user: user
         } )
       })
-      getArticles()
-    } catch (err) {
-        console.log(err)
-    }
-    }, [])
-
+      .then(() => {
+        getArticles()
+        console.log("article posted and state re-initialized")
+      })
+      .catch(err => console.log(err))
+    console.log("add request completed")
 }
 
 
