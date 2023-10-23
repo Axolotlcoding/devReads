@@ -11,7 +11,7 @@ const App = () => {
   const [feedArticles, setFeedArticles] = useState("")
   const [newArticle, setNewArticle] = useState("");
   const [user, setUser] = useState("")
-
+  
   /* 
 *********************** Grabs User Data for display or reference  ******************************
 */  
@@ -72,6 +72,24 @@ const handleDeleteClick = (articleID) => {
 */
 
 const handleAddClick = () => {
+
+   //user DOMParser to extract article title from link
+
+   const getTitle = (url) => {
+    console.log(url);
+      fetch(url, {mode: 'cors'})
+      .then((response) => response.text())
+      .then((html) => {
+        const document = new DOMParser().parseFromString(html, 'text/html');
+        const title = document.querySelectorAll('title')[0];
+        console.log(`from App.js get title: `,title.innerText);
+        return title.innerText;
+      });
+   }
+
+   const articleTitle = getTitle(newArticle);
+
+
     console.log("inside ADD")
     fetch('http://localhost:3000/article', { 
         method: 'POST',
