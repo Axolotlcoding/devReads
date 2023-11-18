@@ -1,12 +1,73 @@
 const db = require("../model/articleModel");
+const AWS = require("aws-sdk");
+// import AWS object without services
 
 const articleController = {};
+
+AWS.config.update({
+  accessKeyId: "AKIAYTC76N32CK4B3VG2",
+  secretAccessKey: "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",
+  region: "us-east-1",
+});
+const cloudwatchlogs = new AWS.CloudWatchLogs();
 
 //Github OAuth middleware
 articleController.authorizeUser = (req, res, next) => {
   console.log("authorizeUser is working");
   return next();
 };
+
+articleController.logs = async (req, res, next) => {
+  var params = {
+    logGroupName: "/aws/lambda/Log-Grabber",
+    logStreamName:
+      "2023/10/30/[$LATEST]086aaca61a0349d6af28360631e87aed" /* required */,
+    // endTime: 'NUMBER_VALUE',
+    // limit: 'NUMBER_VALUE',
+    // logGroupIdentifier: 'STRING_VALUE',
+    // logGroupName: 'STRING_VALUE',
+    // nextToken: 'STRING_VALUE',
+    // startFromHead: true || false,
+    // startTime: 'NUMBER_VALUE',
+    // unmask: true || false
+  };
+  cloudwatchlogs.getLogEvents(params, function (err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else {
+      console.log(data);
+      res.locals.logs = data;
+      return next;
+    } // successful response
+  });
+};
+// const paramsDescribe = {
+//   logGroupName: "/aws/lambda/Log-Grabber", // The log group name
+//   // You can add additional parameters as needed
+// };
+
+// // Retrieve log streams
+// cloudwatchlogs.describeLogStreams(paramsDescribe, function (err, data) {
+//   if (err) console.log(err, err.stack); // an error occurred
+//   else {
+//     console.log(data); // successful response
+//     // Assuming you want to get logs from the first stream
+//     const stream = data.logStreams[0];
+//     if (stream) {
+//       // Parameters for the getLogEvents method
+//       const paramsGet = {
+//         logGroupName: paramsDescribe.logGroupName,
+//         logStreamName: stream.logStreamName,
+//         // You can add additional parameters as needed
+//       };
+
+//       // Retrieve log events
+//       cloudwatchlogs.getLogEvents(paramsGet, function (err, data) {
+//         if (err) console.log(err, err.stack); // an error occurred
+//         else console.log(data); // successful response
+//       });
+//     }
+//   }
+// });
 
 //Show user's articles middleware
 articleController.getUserPage = async (req, res, next) => {
